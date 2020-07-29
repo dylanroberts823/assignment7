@@ -31,7 +31,8 @@ function Pokemon:init(def, level)
 
     self.level = level
     self.currentExp = 0
-    self.expToLevel = self.level * self.level * 5 * 0.75
+    --TESTING usually 5 * .75
+    self.expToLevel = self.level * self.level * 0.75
 
     self:calculateStats()
 

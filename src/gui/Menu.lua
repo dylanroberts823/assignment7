@@ -14,18 +14,22 @@ Menu = Class{}
 
 function Menu:init(def)
     self.panel = Panel(def.x, def.y, def.width, def.height)
-    
+
+    if def.displayCursor ~= nil then self.displayCursor = def.displayCursor
+    else self.displayCursor = true end
+
     self.selection = Selection {
         items = def.items,
         x = def.x,
         y = def.y,
         width = def.width,
-        height = def.height
+        height = def.height,
+        displayCursor = self.displayCursor
     }
 end
 
 function Menu:update(dt)
-    self.selection:update(dt)
+  self.selection:update(dt)
 end
 
 function Menu:render()
