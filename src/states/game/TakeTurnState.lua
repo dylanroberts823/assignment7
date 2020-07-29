@@ -217,7 +217,7 @@ function TakeTurnState:victory()
                         print(self.hpIncrease)
                         gStateStack:push(BattleMessageState('Congratulations! Level Up!',
                         function()
-                            print(hpIncrease)
+                            --push level up menu
                             gStateStack:push(LevelUpMenuState({
                               battleState = self.battleState,
                               hpIncrease = self.hpIncrease,
@@ -229,7 +229,29 @@ function TakeTurnState:victory()
                               oldDefense = self.oldDefense,
                               oldSpeed= self.oldSpeed
                             }))
-                            --self:fadeOutWhite()
+                            -- pause for five a seconds, then restore playstate
+                            Timer.after(5, function()
+                              --special fade in to pop two states
+                              -- fade in
+                              gStateStack:push(FadeInState({
+                                  r = 255, g = 255, b = 255
+                              }, 1,
+                              function()
+
+                                  -- resume field music
+                                  gSounds['victory-music']:stop()
+                                  gSounds['field-music']:play()
+
+                                  -- pop off the levelUpMenue
+                                  gStateStack:pop()
+                                  --pop the battleState
+                                  gStateStack:pop()
+
+                                  gStateStack:push(FadeOutState({
+                                      r = 255, g = 255, b = 255
+                                  }, 1, function() end))
+                              end))
+                            end)
                         end))
                     else
                         self:fadeOutWhite()
